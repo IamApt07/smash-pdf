@@ -1,0 +1,48 @@
+
+.container{
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    background-size: cover;
+    justify-content: center;
+}
+
+.container .btn{
+    position: absolute;
+    top: 30%;
+    left: 40.5%;
+    padding: 8px 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.container .h1{
+    position: absolute;
+    top: 10%;
+    left: 34%;
+    padding: 10px 30px;
+    font-size: 35px;
+    color: #282829;
+    font-weight: 900;
+}
+.container .p{
+    position: absolute;
+    top: 15%;
+    left: 38%;
+    padding: 10px 30px;
+    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #9aa5aa;
+}
+
+.container .li{
+    position: absolute;
+    top: 35%;
+    left: 40.5%;
+    padding: 10px 30px;
+    font-size: 17px;
+    color: #1976d2;
+}
+
+.container .li:hover{
+    text-decoration: underline;
+}

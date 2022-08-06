@@ -12,8 +12,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Style from '../styles/image.module.css';
 import AdbIcon from '@mui/icons-material/Adb';
+import Link from 'next/link';
+import Head from 'next/head'
 import DeleteIcon from '@mui/icons-material/Delete';
+
 import { PhotoCamera, Upload, UploadFile, CloudUpload } from '@mui/icons-material';
 import { Input, Stack } from '@mui/material';
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
@@ -26,45 +30,38 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
-
-function Download(arrayBuffer: BlobPart, type: string) {
-  var blob = new Blob([arrayBuffer], { type: type });
-  var url = URL.createObjectURL(blob);
-  window.open(url);
-}
 
 export default function DrawerAppBar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [docUrl , setDocUrl] = React.useState<string>('');
+  const [docUrl, setDocUrl] = React.useState<string>('');
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(event.target.files && event.target.files.length > 0) {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('file', file);
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const arrayBuffer = e.target.result;
-        if (arrayBuffer) {
-          modifyPdf(arrayBuffer);
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      if (file) {
+        console.log('file', file);
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          const arrayBuffer = e.target.result;
+          if (arrayBuffer) {
+            modifyPdf(arrayBuffer);
+          }
         }
-      }
 
-      reader.readAsArrayBuffer(file);      
+        reader.readAsArrayBuffer(file);
+      }
     }
   }
-  }
-
+  
 
   async function modifyPdf(existingPdfBytes: ArrayBuffer) {
     // Fetch an existing PDF document
-  
+
 
     // Load a PDFDocument from the existing PDF bytes
     const pdfDoc = await PDFDocument.load(existingPdfBytes)
@@ -82,7 +79,7 @@ export default function DrawerAppBar(props: Props) {
     // Draw a string of text diagonally across the first page
     firstPage.drawText('This text was added with JavaScript!', {
       x: 5,
-      y: height / 2 ,
+      y: height / 2,
       size: 12,
       font: helveticaFont,
       color: rgb(0.95, 0.1, 0.1),
@@ -92,130 +89,52 @@ export default function DrawerAppBar(props: Props) {
     // Serialize the PDFDocument to bytes (a Uint8Array)
     const pdfBytes = await pdfDoc.save()
 
-    const blob   = new Blob( [ pdfBytes ], { type: "application/pdf" } );
-    const docUrl = URL.createObjectURL( blob );
-    console.log('docUrl', docUrl);  
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    const docUrl = URL.createObjectURL(blob);
+    console.log('docUrl', docUrl);
     setDocUrl(docUrl);
     // Download(pdfBytes, "application/pdf");
   }
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        SmashPDF
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            SmashPDF
-          </Typography>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-       
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Box component="nav">
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
+    <div>
+      <title>SmashPDF</title>
+      <div className={Style.container}>
+        <h1 className={Style.h1}>Easy to use Online PDF editor</h1>
+        <p className={Style.p}>Edit PDF files for free. Fill & sign PDF</p>
+        <img src='/smashpdfbg.jpg' alt='' />
+        <Button
+          className={Style.btn}
+          variant="contained"
+          component="label"
+          startIcon={<CloudUpload />}
         >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box component="main" sx={{ p: 3 }} style={{height:'100vh' , width:'100vw' , display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <Toolbar/>
+          Upload a PDF File
+          <input
+            type="file"
+            hidden
+            onChange={onFileChange}
+          />
+
+        </Button>
+        <div className={Style.li}>
+          <Link href='/'><a>or start with a blank document</a></Link>
+        </div>
+      </div>
      
+
         {
-          !docUrl && (
-            <Button
-  variant="contained"
-  component="label"
-  startIcon={<CloudUpload />}
->
-  Upload a File
-  <input
-    type="file"
-    hidden
-    onChange={onFileChange}
-  />
-</Button>
+          docUrl && (
+
+            <iframe src={docUrl} width={"100%"} height={"100%"} />
+
           )
+
         }
-    
-
- {
-  docUrl && (
- 
-      <iframe src={docUrl} width={"100%"} height={"100%"}/>
-
-  )
- }
-
-     
-        
-      </Box>
-    </Box>
+    </div>
   );
 }
+
+
